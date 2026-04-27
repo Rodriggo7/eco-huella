@@ -1,0 +1,176 @@
+{
+  "app_name": "EcoHuella MVP",
+  "version": "1.0",
+  "metadata": {
+    "region": "Argentina",
+    "main_unit": "kg_co2e",
+    "period": "anual"
+  },
+  "modules": [
+    {
+      "id": "hogar",
+      "label": "Hogar",
+      "icon": "home",
+      "questions": [
+        {
+          "id": "h_personas",
+          "text": "¿Cuántas personas viven en tu hogar?",
+          "type": "number",
+          "description": "Esto ayuda a prorratear consumos compartidos.",
+          "placeholder": "Ej: 3"
+        },
+        {
+          "id": "h_electricidad",
+          "text": "¿Cuál es tu consumo promedio de electricidad?",
+          "type": "select",
+          "options": [
+            { "label": "Bajo (Departamento / 1-2 personas)", "value": 150, "factor": 0.35, "unit": "kWh/mes" },
+            { "label": "Medio (Casa estándar / 3-4 personas)", "value": 300, "factor": 0.35, "unit": "kWh/mes" },
+            { "label": "Alto (Casa grande o mucho equipamiento)", "value": 600, "factor": 0.35, "unit": "kWh/mes" }
+          ]
+        },
+        {
+          "id": "h_calefaccion",
+          "text": "¿Qué tipo de calefacción usas principalmente?",
+          "type": "select",
+          "options": [
+            { "label": "Gas Natural", "factor": 2.02, "unit": "m3" },
+            { "label": "Eléctrica", "factor": 0.35, "unit": "kWh" },
+            { "label": "Leña", "factor": 1.5, "unit": "kg" }
+          ]
+        },
+        {
+          "id": "h_renovable",
+          "text": "¿Utilizas fuentes de energía renovable?",
+          "type": "select",
+          "options": [
+            { "label": "No uso", "impact_modifier": 1.0 },
+            { "label": "Sí (Termotanque solar)", "impact_modifier": 0.85 },
+            { "label": "Sí (Paneles solares / Energía verde)", "impact_modifier": 0.70 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "transporte",
+      "label": "Transporte",
+      "icon": "car",
+      "questions": [
+        {
+          "id": "t_medio_principal",
+          "text": "¿Cuál es tu principal medio de transporte?",
+          "type": "select",
+          "options": [
+            { "label": "Auto (Nafta)", "factor": 2.31, "unit": "litro" },
+            { "label": "Auto (Diesel)", "factor": 2.68, "unit": "litro" },
+            { "label": "Transporte Público (Colectivo/Tren)", "factor": 0.05, "unit": "km" },
+            { "label": "Bicicleta / Pie", "factor": 0, "unit": "km" }
+          ]
+        },
+        {
+          "id": "t_distancia_semanal",
+          "text": "¿Cuántos kilómetros recorres por semana aproximadamente?",
+          "type": "range",
+          "min": 0,
+          "max": 500,
+          "step": 10
+        },
+        {
+          "id": "t_vuelos",
+          "text": "¿Cuántos vuelos de ida y vuelta hiciste en el último año?",
+          "type": "select",
+          "options": [
+            { "label": "Ninguno", "value": 0, "factor": 0 },
+            { "label": "1-2 vuelos de cabotaje (ej. San Juan - BsAs)", "value": 2000, "factor": 0.15, "unit": "km" },
+            { "label": "Vuelos internacionales largos", "value": 15000, "factor": 0.18, "unit": "km" }
+          ]
+        },
+        {
+          "id": "t_ocupacion",
+          "text": "¿Cuál es el nivel de ocupación promedio de tu vehículo?",
+          "type": "select",
+          "options": [
+            { "label": "Viajo solo/a", "divisor": 1 },
+            { "label": "1 acompañante", "divisor": 2 },
+            { "label": "3 o más personas (Car pooling)", "divisor": 3.5 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alimentacion",
+      "label": "Alimentación",
+      "icon": "food",
+      "questions": [
+        {
+          "id": "a_dieta",
+          "text": "¿Cómo describirías tu dieta habitual?",
+          "type": "select",
+          "options": [
+            { "label": "Carnívora (Consumo diario de carne)", "base_yearly_kg": 2500 },
+            { "label": "Carnívora moderada (3 veces por semana)", "base_yearly_kg": 1600 },
+            { "label": "Vegetariana", "base_yearly_kg": 1000 },
+            { "label": "Vegana", "base_yearly_kg": 700 }
+          ]
+        },
+        {
+          "id": "a_procedencia",
+          "text": "¿Sueles comprar productos locales y de estación?",
+          "type": "select",
+          "options": [
+            { "label": "Siempre (Feria/Productores locales)", "impact_modifier": 0.9 },
+            { "label": "A veces", "impact_modifier": 1.0 },
+            { "label": "No (Todo en supermercado/Importado)", "impact_modifier": 1.15 }
+          ]
+        },
+        {
+          "id": "a_desperdicio",
+          "text": "¿Qué cantidad de comida desperdicias a la semana?",
+          "type": "select",
+          "options": [
+            { "label": "Casi nada", "extra_kg_co2": 0 },
+            { "label": "Un plato o restos pequeños", "extra_kg_co2": 50 },
+            { "label": "Bastante (más de 1kg a la semana)", "extra_kg_co2": 150 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "residuos",
+      "label": "Consumo y Residuos",
+      "icon": "trash",
+      "questions": [
+        {
+          "id": "r_reciclaje",
+          "text": "¿Separas tus residuos para reciclaje?",
+          "type": "select",
+          "options": [
+            { "label": "Siempre", "impact_modifier": 0.8 },
+            { "label": "A veces", "impact_modifier": 0.95 },
+            { "label": "Nunca", "impact_modifier": 1.0 }
+          ]
+        },
+        {
+          "id": "r_compras",
+          "text": "¿Con qué frecuencia compras ropa o tecnología nueva?",
+          "type": "select",
+          "options": [
+            { "label": "Solo cuando es estrictamente necesario", "extra_kg_co2": 100 },
+            { "label": "Frecuencia normal", "extra_kg_co2": 300 },
+            { "label": "Muy frecuente (seguimiento de tendencias)", "extra_kg_co2": 800 }
+          ]
+        },
+        {
+          "id": "r_reparacion",
+          "text": "¿Sueles reparar objetos o comprar de segunda mano?",
+          "type": "select",
+          "options": [
+            { "label": "Sí, casi siempre", "impact_modifier": 0.9 },
+            { "label": "A veces", "impact_modifier": 0.95 },
+            { "label": "Prefiero siempre comprar nuevo", "impact_modifier": 1.0 }
+          ]
+        }
+      ]
+    }
+  ]
+}
